@@ -1,167 +1,167 @@
         ;
         ; Space Raid para Atari 2600
         ;
-        ; por Oscar Toledo GutiÈrrez
+        ; por Oscar Toledo Guti√©rrez
         ;
-        ; (c) Copyright 2013 Oscar Toledo GutiÈrrez
+        ; (c) Copyright 2013 Oscar Toledo Guti√©rrez
         ;
-        ; CreaciÛn: 27-ago-2011.
-        ; RevisiÛn: 23-may-2013. Se agrega posicionamiento en X.
-        ; RevisiÛn: 24-sep-2013. La nave se mueve en seudo-3D, crece y se
-        ;			  achica, tiene sombra, dispara. Y hay un
-        ;			  aviÛn enemigo pasando.
-        ; RevisiÛn: 25-sep-2013. Ya hay una bala enemiga y hasta tres sprites
-        ;			  enemigos.
-        ; RevisiÛn: 26-sep-2013. Se introducen todos los sprites.
-        ; RevisiÛn: 27-sep-2013. Fortalezas semi-operativas, va mostrando
-        ;			  diferentes elementos. El espacio ya muestra
-        ;			  olas de ataque de aviones :) La sombra del
-        ;			  jugador desaparece en el espacio. Ya puede
-        ;			  destruir enemigos. Se agrega espectacular
-        ;			  raya 3D :P.
-        ; RevisiÛn: 28-sep-2013. Los caÒones y los aviones ya disparan.
-        ;			  Solucionado bug al explotar satÈlite. Se
-        ;			  ajusta sincronÌa NTSC/PAL. Gasta gasolina en
-        ;			  fortaleza, recupera con depÛsitos. Muestra
-        ;			  total de gasolina, puntos y vida. Pantalla de
-        ;			  Game Over preliminar.
-        ; RevisiÛn: 29-sep-2013. Se pone pantalla de tÌtulo con efecto de
-        ;			  brillo. Se agrandan las balas. OptimizaciÛn
-        ;			  del n˙cleo para corregir defectos visuales.
-        ;			  Ya punt˙a por destruir enemigos. La
-        ;			  electricidad detiene la bala. El campo de
-        ;			  electricidad ya se mueve.
-        ; RevisiÛn: 30-sep-2013. Se implementa la explosiÛn de la nave. Ya se
-        ;			  ve completo el robotote. El misil teledirigido
-        ;			  ya sigue a la nave y son necesarios cinco
-        ;			  impactos para destruirlo. Ya no tiene disparo
-        ;			  continuo. El jugador explota cuando se le
-        ;			  acaba la gasolina. El robotote avanza y
-        ;			  dispara (10 impactos para detenerlo). Se
-        ;			  soluciona bug en que no podÌa seleccionar
-        ;			  nivel fortaleza como inicio (no iniciaba
-        ;			  largo_sprite). Nuevo dibujo para el misil
-        ;			  teledirigido. Ya dispara misiles verticales
-        ;			  y pueden ser destruidos si el jugador va al
-        ;			  nivel correcto. Se implementan los colores
-        ;			  para PAL. Se integran efectos de sonido. Se
-        ;			  corrige bug de aviÛn invisible destruido en
-        ;			  espacio. El aviÛn pequeÒo ya no es tan
-        ;			  pequeÒo.
-        ; RevisiÛn: 01-oct-2013. Las balas de los enemigos ya destruyen al
-        ;			  jugador. El jugador ya puede chocar con los
-        ;			  elementos del juego. Al tomar gasolina
-        ;			  aumenta a unidades completas. Se hace "alta"
-        ;			  la barrera elÈctrica. El jugador inicia
-        ;			  arriba despuÈs de ser destruido. Ya disparan
-        ;			  los aviones chicos en la fortaleza. El botÛn
-        ;			  de reset ya reinicia el juego. El switch de
-        ;			  dificultad para el jugador 1 ya se toma en
-        ;			  cuenta para que los caÒones disparen m·s
-        ;			  seguido. Juego completo :). Se alarga el
-        ;			  sprite de electricidad, se acelera su
-        ;			  movimiento para que parezca campo de fuerza y
-        ;			  ya no se sale de la pantalla. El robotote
-        ;			  empieza 10 pixeles m·s a la izquierda para
-        ;			  no salirse de la pantalla. CorrecciÛn en la
-        ;			  ubicaciÛn del disparo del robotote. Desaparece
-        ;			  bala cuando ocurre explosiÛn del jugador. Se
-        ;			  agrega bitmap "by nanochess" :). Retorna el
-        ;			  fondo a negro en caso de Game Over.
-        ; RevisiÛn: 02-oct-2013. Evita que disparen caÒones invisibles (se
-        ;			  escuchaba el sonido). Se optimiza m·s el
-        ;			  cÛdigo. No se podÌa hacer reset mientras
-        ;			  explotaba. Ajuste en consumo de gasolina. La
-        ;			  explosiÛn del robotote y del satÈlite ya es
-        ;			  animada. CorrecciÛn en misiles verticales,
-        ;			  seguÌan subiendo aunque ya hubieran
-        ;			  desaparecido. Se ajusta con el emulador
-        ;			  Stella para que emita exactamente 262 lÌneas
-        ;			  con NTSC (eran 265) y 312 con PAL (eran 315)
-        ; RevisiÛn: 03-oct-2013. La bala del jugador se centra en la punta de
-        ;			  la nave, tambiÈn la bala de los enemigos.
-        ; 			  Ya hay suficientes botes de gasolina de
-        ;			  acuerdo a la longitud del nivel y m·xima
-        ;			  dificultad. DescubrÌ el uso de HMCLR para
-        ;			  ahorrar bytes :). Se integra mira para
-        ;			  apuntar en el espacio (sÛlo dificultad f·cil)
-        ;			  Los campos elÈctricos ya pueden estar arriba
-        ;			  o abajo. GanÈ tiempo en el kernel para usar
-        ;			  HMOVE en cada lÌnea de la visualizaciÛn
-        ;			  principal y asÌ desaparecen los fragmentos
-        ;			  de pixeles que aparecÌan en la columna
-        ;			  izquierda del video. Se modifica el indicador
-        ;			  de puntuaciÛn para mantener la barra negra a
-        ;			  la izquierda.
-        ; RevisiÛn: 04-oct-2013. Se reescribe otra vez el kernel de pantalla
-        ;			  para que quepa una escritura en HMBL para
-        ;			  evitar que las rayas 3D se desplacen cuando
-        ;			  aparecÌa un sprite. La raya 3D se desplaza
-        ;			  m·s r·pido. CorrecciÛn en tabla de puntuaciÛn.
-        ;			  Los agujeros de misil ahora a veces disparan
-        ;			  al llegar al centro. Se agregan dos adornos en
-        ;			  la pared de la fortaleza usando un cuarto
-        ;			  sprite (nuevo). Colores variables en el
-        ;			  espacio (es que es hiperespacio :P) Se centra
-        ;			  el disparo del robotote. Mejores colores para
-        ;			  los sprites. Los disparos son m·s aleatorios
-        ;			  y la dificultad es progresiva.
-        ; RevisiÛn: 05-oct-2013. Color alterno cada dos fortalezas. M·s
-        ;			  optimizaciÛn. Limita puntos a 9999. Se
-        ;			  agrega caÒÛn giratorio. Se corrige un bug
-        ;			  en que cuando aparecÌa la mirilla y se
-        ;			  disparaba entonces los enemigos explotaban
-        ;			  inmediato.
-        ; RevisiÛn: 06-oct-2013. Se implementa PAL60, es la misma frecuencia
-        ;			  que NTSC pero con colores PAL.
-        ; RevisiÛn: 07-oct-2013. Se optimiza el minireproductor de sonido y se
-        ;			  cambia el formato (18 bytes ahorrados m·s tres
-        ;			  posibles en efectos). Se corrige bug en
-        ;			  fortaleza en un nivel avanzado al ser tocado
-        ; 			  podÌa explotar dos veces ya que la gasolina
-        ;			  seguÌa acab·ndose.
-        ; RevisiÛn: 08-oct-2013. M·s optimizaciÛn. CorrecciÛn en adornos de
-        ;			  fortaleza, no salÌa la flecha amarilla.
-        ;			  Ligera mejora en kernel de visualizaciÛn. Ya
-        ;			  hay sonido para cuando los aviones enemigos
-        ;			  disparan. Ya se alternan los disparos de los
-        ;			  aviones enemigos, antes sÛlo disparaba el
-        ;			  primero de estos. El agujero de misil ya se
-        ;			  llena de fuego al disparar misil y destruye
-        ;			  al jugador si se toca en ese momento.
-        ; RevisiÛn: 09-oct-2013. M·s optimizaciÛn.
-        ; RevisiÛn: 10-oct-2013. M·s optimizaciÛn. Se reutiliza byte
-        ;			  desaprovechado en letras para puntuaciÛn. Se
-        ;			  combina la detecciÛn de colisiÛn de bala y
-        ;			  de nave y ahorrÈ montones de bytes. Se
-        ;			  agrega detecciÛn de cÛdigo importante dividido
-        ;			  entre dos p·ginas de 256 bytes (un salto 6502
-        ;			  usa un ciclo extra)
-        ; RevisiÛn: 11-oct-2013. M·s optimizaciÛn. Permite seleccionar
-        ;			  dificultad en Game Over.
-        ; RevisiÛn: 12-oct-2013. RediseÒo del fondo en el espacio para que
-        ;			  las rayas parezcan estrellas. Se agregan
-        ;			  planetas (dos sprites) en el espacio :) Se
-        ;			  agrega alienÌgena que anda en el piso de la
-        ;			  fortaleza. Los caÒones ya disparan a la
-        ;			  derecha (aleatoriamente). Se compacta la
-        ;			  representaciÛn de nivel de las fortalezas. Se
-        ;			  agregan adornos de piso antes de los agujeros
-        ;			  de misil. Se agrega un tiempo aleatorio entre
-        ;			  elementos de fortaleza para que no se sientan
-        ;			  "tan" iguales. El misil teledirigido congela
-        ;			  el scroll de la raya 3D.
-        ; RevisiÛn: 19-oct-2013. Se corrige bug en que mira aparecÌa cuando
-        ;			  el aviÛn enemigo ya est· detr·s del jugador.
-        ;			  Se corrige bug en que misil teledirigido iba
-        ;			  muy abajo con respecto a la nave y era
-        ;			  imposible atinarle cuando la nave estaba hasta
-        ;			  arriba. Ahora son sÛlo tres niveles de gasto
-        ;			  de gasolina y m·s altos, ya que en los niveles
-        ;			  primarios apenas se consumÌa gasolina.
-        ;			  Gasolina es 5.3. Ya dispara el tercer aviÛn,
-        ;			  era a causa de var. 'ola' no era tomada en
-        ;			  cuenta cuando era $3b.
+        ; Creaci√≥n: 27-ago-2011.
+        ; Revisi√≥n: 23-may-2013. Se agrega posicionamiento en X.
+        ; Revisi√≥n: 24-sep-2013. La nave se mueve en seudo-3D, crece y se
+        ;			   achica, tiene sombra, dispara. Y hay un
+        ;			   avi√≥n enemigo pasando.
+        ; Revisi√≥n: 25-sep-2013. Ya hay una bala enemiga y hasta tres sprites
+        ;			   enemigos.
+        ; Revisi√≥n: 26-sep-2013. Se introducen todos los sprites.
+        ; Revisi√≥n: 27-sep-2013. Fortalezas semi-operativas, va mostrando
+        ;			   diferentes elementos. El espacio ya muestra
+        ;			   olas de ataque de aviones :) La sombra del
+        ;			   jugador desaparece en el espacio. Ya puede
+        ;			   destruir enemigos. Se agrega espectacular
+        ;			   raya 3D :P.
+        ; Revisi√≥n: 28-sep-2013. Los ca√±ones y los aviones ya disparan.
+        ;			   Solucionado bug al explotar sat√©lite. Se
+        ;			   ajusta sincron√≠a NTSC/PAL. Gasta gasolina en
+        ;			   fortaleza, recupera con dep√≥sitos. Muestra
+        ;			   total de gasolina, puntos y vida. Pantalla de
+        ;			   Game Over preliminar.
+        ; Revisi√≥n: 29-sep-2013. Se pone pantalla de t√≠tulo con efecto de
+        ;		 	   brillo. Se agrandan las balas. Optimizaci√≥n
+        ;	 		   del n√∫cleo para corregir defectos visuales.
+        ; 			   Ya punt√∫a por destruir enemigos. La
+        ;			   electricidad detiene la bala. El campo de
+        ;			   electricidad ya se mueve.
+        ; Revisi√≥n: 30-sep-2013. Se implementa la explosi√≥n de la nave. Ya se
+        ;			   ve completo el robotote. El misil teledirigido
+        ;			   ya sigue a la nave y son necesarios cinco
+        ;			   impactos para destruirlo. Ya no tiene disparo
+        ;			   continuo. El jugador explota cuando se le
+        ;			   acaba la gasolina. El robotote avanza y
+        ;			   dispara (10 impactos para detenerlo). Se
+        ;			   soluciona bug en que no pod√≠a seleccionar
+        ;			   nivel fortaleza como inicio (no iniciaba
+        ;			   largo_sprite). Nuevo dibujo para el misil
+        ;			   teledirigido. Ya dispara misiles verticales
+        ;			   y pueden ser destruidos si el jugador va al
+        ;			   nivel correcto. Se implementan los colores
+        ;			   para PAL. Se integran efectos de sonido. Se
+        ;			   corrige bug de avi√≥n invisible destruido en
+        ;			   espacio. El avi√≥n peque√±o ya no es tan
+        ;			   peque√±o.
+        ; Revisi√≥n: 01-oct-2013. Las balas de los enemigos ya destruyen al
+        ;			   jugador. El jugador ya puede chocar con los
+        ;			   elementos del juego. Al tomar gasolina
+        ;			   aumenta a unidades completas. Se hace "alta"
+        ;			   la barrera el√©ctrica. El jugador inicia
+        ;			   arriba despu√©s de ser destruido. Ya disparan
+        ;			   los aviones chicos en la fortaleza. El bot√≥n
+        ;			   de reset ya reinicia el juego. El switch de
+        ;			   dificultad para el jugador 1 ya se toma en
+        ;			   cuenta para que los ca√±ones disparen m√°s
+        ;			   seguido. Juego completo :). Se alarga el
+        ;			   sprite de electricidad, se acelera su
+        ;			   movimiento para que parezca campo de fuerza y
+        ;			   ya no se sale de la pantalla. El robotote
+        ;			   empieza 10 pixeles m√°s a la izquierda para
+        ;			   no salirse de la pantalla. Correcci√≥n en la
+        ;			   ubicaci√≥n del disparo del robotote. Desaparece
+        ;			   bala cuando ocurre explosi√≥n del jugador. Se
+        ;			   agrega bitmap "by nanochess" :). Retorna el
+        ;			   fondo a negro en caso de Game Over.
+        ; Revisi√≥n: 02-oct-2013. Evita que disparen ca√±ones invisibles (se
+        ;			   escuchaba el sonido). Se optimiza m√°s el
+        ;			   c√≥digo. No se pod√≠a hacer reset mientras
+        ;			   explotaba. Ajuste en consumo de gasolina. La
+        ;			   explosi√≥n del robotote y del sat√©lite ya es
+        ;			   animada. Correcci√≥n en misiles verticales,
+        ;			   segu√≠an subiendo aunque ya hubieran
+        ;			   desaparecido. Se ajusta con el emulador
+        ;			   Stella para que emita exactamente 262 l√≠neas
+        ;			   con NTSC (eran 265) y 312 con PAL (eran 315)
+        ; Revisi√≥n: 03-oct-2013. La bala del jugador se centra en la punta de
+        ;			   la nave, tambi√©n la bala de los enemigos.
+        ; 			   Ya hay suficientes botes de gasolina de
+        ;			   acuerdo a la longitud del nivel y m√°xima
+        ;			   dificultad. Descubr√≠ el uso de HMCLR para
+        ;			   ahorrar bytes :). Se integra mira para
+        ;			   apuntar en el espacio (s√≥lo dificultad f√°cil)
+        ;			   Los campos el√©ctricos ya pueden estar arriba
+        ;			   o abajo. Gan√© tiempo en el kernel para usar
+        ;			   HMOVE en cada l√≠nea de la visualizaci√≥n
+        ;			   principal y as√≠ desaparecen los fragmentos
+        ;			   de pixeles que aparec√≠an en la columna
+        ;			   izquierda del video. Se modifica el indicador
+        ;			   de puntuaci√≥n para mantener la barra negra a
+        ;			   la izquierda.
+        ; Revisi√≥n: 04-oct-2013. Se reescribe otra vez el kernel de pantalla
+        ;			   para que quepa una escritura en HMBL para
+        ;			   evitar que las rayas 3D se desplacen cuando
+        ;			   aparec√≠a un sprite. La raya 3D se desplaza
+        ;			   m√°s r√°pido. Correcci√≥n en tabla de puntuaci√≥n.
+        ;			   Los agujeros de misil ahora a veces disparan
+        ;			   al llegar al centro. Se agregan dos adornos en
+        ;			   la pared de la fortaleza usando un cuarto
+        ;			   sprite (nuevo). Colores variables en el
+        ;			   espacio (es que es hiperespacio :P) Se centra
+        ;			   el disparo del robotote. Mejores colores para
+        ;			   los sprites. Los disparos son m√°s aleatorios
+        ;			   y la dificultad es progresiva.
+        ; Revisi√≥n: 05-oct-2013. Color alterno cada dos fortalezas. M√°s
+        ;			   optimizaci√≥n. Limita puntos a 9999. Se
+        ;			   agrega ca√±√≥n giratorio. Se corrige un bug
+        ;			   en que cuando aparec√≠a la mirilla y se
+        ;			   disparaba entonces los enemigos explotaban
+        ;			   inmediato.
+        ; Revisi√≥n: 06-oct-2013. Se implementa PAL60, es la misma frecuencia
+        ;			   que NTSC pero con colores PAL.
+        ; Revisi√≥n: 07-oct-2013. Se optimiza el minireproductor de sonido y se
+        ;			   cambia el formato (18 bytes ahorrados m√°s tres
+        ;			   posibles en efectos). Se corrige bug en
+        ;			   fortaleza en un nivel avanzado al ser tocado
+        ; 			   pod√≠a explotar dos veces ya que la gasolina
+        ;			   segu√≠a acab√°ndose.
+        ; Revisi√≥n: 08-oct-2013. M√°s optimizaci√≥n. Correcci√≥n en adornos de
+        ;			   fortaleza, no sal√≠a la flecha amarilla.
+        ;			   Ligera mejora en kernel de visualizaci√≥n. Ya
+        ;			   hay sonido para cuando los aviones enemigos
+        ;			   disparan. Ya se alternan los disparos de los
+        ;			   aviones enemigos, antes s√≥lo disparaba el
+        ;			   primero de estos. El agujero de misil ya se
+        ;			   llena de fuego al disparar misil y destruye
+        ;			   al jugador si se toca en ese momento.
+        ; Revisi√≥n: 09-oct-2013. M√°s optimizaci√≥n.
+        ; Revisi√≥n: 10-oct-2013. M√°s optimizaci√≥n. Se reutiliza byte
+        ;			   desaprovechado en letras para puntuaci√≥n. Se
+        ;			   combina la detecci√≥n de colisi√≥n de bala y
+        ;			   de nave y ahorr√© montones de bytes. Se
+        ;			   agrega detecci√≥n de c√≥digo importante dividido
+        ;			   entre dos p√°ginas de 256 bytes (un salto 6502
+        ;			   usa un ciclo extra)
+        ; Revisi√≥n: 11-oct-2013. M√°s optimizaci√≥n. Permite seleccionar
+        ;			   dificultad en Game Over.
+        ; Revisi√≥n: 12-oct-2013. Redise√±o del fondo en el espacio para que
+        ;			   las rayas parezcan estrellas. Se agregan
+        ;			   planetas (dos sprites) en el espacio :) Se
+        ;			   agrega alien√≠gena que anda en el piso de la
+        ;			   fortaleza. Los ca√±ones ya disparan a la
+        ;			   derecha (aleatoriamente). Se compacta la
+        ;			   representaci√≥n de nivel de las fortalezas. Se
+        ;			   agregan adornos de piso antes de los agujeros
+        ;			   de misil. Se agrega un tiempo aleatorio entre
+        ;			   elementos de fortaleza para que no se sientan
+        ;			   "tan" iguales. El misil teledirigido congela
+        ;			   el scroll de la raya 3D.
+        ; Revisi√≥n: 19-oct-2013. Se corrige bug en que mira aparec√≠a cuando
+        ;			   el avi√≥n enemigo ya est√° detr√°s del jugador.
+        ;			   Se corrige bug en que misil teledirigido iba
+        ;			   muy abajo con respecto a la nave y era
+        ;			   imposible atinarle cuando la nave estaba hasta
+        ;			   arriba. Ahora son s√≥lo tres niveles de gasto
+        ;			   de gasolina y m√°s altos, ya que en los niveles
+        ;			   primarios apenas se consum√≠a gasolina.
+        ;			   Gasolina es 5.3. Ya dispara el tercer avi√≥n,
+        ;			   era a causa de var. 'ola' no era tomada en
+        ;			   cuenta cuando era $3b.
         ;
 
         ;
@@ -173,51 +173,51 @@
         ;
         ; Manual del usuario:
         ;
-        ; En este sorprendente juego isomÈtrico en 3D, pilotee su nave de
+        ; En este sorprendente juego isom√©trico en 3D, pilotee su nave de
         ; guerra y pase a la ofensiva contra el enemigo, aniquile sus fuerzas
-        ; en el espacio y haga un ataque r·pido a las fortalezas que encuentre
-        ; en su camino. °Cuidado con el robot maestro y los misiles
+        ; en el espacio y haga un ataque r√°pido a las fortalezas que encuentre
+        ; en su camino. ¬°Cuidado con el robot maestro y los misiles
         ; teledirigidos!
         ;
         ; o Seleccione dificultad con P1, Easy (A) / Hard (B)
-        ;   En dificultad f·cil obtendr· una mirilla para apuntar a los
+        ;   En dificultad f√°cil obtendr√° una mirilla para apuntar a los
         ;   aviones enemigos.
         ; o Oprima Reset en cualquier momento para reiniciar el juego
         ; o Mueva su nave utilizando la palanca de mandos (izq+der, arriba
-        ;   para bajar y abajo para subir) °cuidado con los campos de fuerza!
-        ; o Dispare a los enemigos utilizando el botÛn de la palanca de mandos.
+        ;   para bajar y abajo para subir) ¬°cuidado con los campos de fuerza!
+        ; o Dispare a los enemigos utilizando el bot√≥n de la palanca de mandos.
         ; o Su nivel de combustible se muestra con una barra roja doble en la
-        ;   parte inferior de la pantalla y se ir· reduciendo. Destruya
+        ;   parte inferior de la pantalla y se ir√° reduciendo. Destruya
         ;   bidones de combustible para recuperarlo. En el espacio el gasto
-        ;   de combustible es mÌnimo, pero en fortalezas se consumir· y m·s
-        ;   r·pidamente en niveles avanzados.
-        ; o Su puntuaciÛn se muestra en la parte inferior junto con el n˙mero
+        ;   de combustible es m√≠nimo, pero en fortalezas se consumir√° y m√°s
+        ;   r√°pidamente en niveles avanzados.
+        ; o Su puntuaci√≥n se muestra en la parte inferior junto con el n√∫mero
         ;   de naves restante.
         ;
-        ; Tabla de puntuaciÛn.
+        ; Tabla de puntuaci√≥n.
         ; Misil - 1 punto
         ; Combustible - 1 punto
-        ; CaÒÛn - 2 puntos
-        ; AviÛn - 2 puntos
-        ; AlienÌgena - 3 puntos
-        ; Antena de satÈlite - 5 puntos
+        ; Ca√±√≥n - 2 puntos
+        ; Avi√≥n - 2 puntos
+        ; Alien√≠gena - 3 puntos
+        ; Antena de sat√©lite - 5 puntos
         ; Misil teledirigido - 5 puntos
-        ; SatÈlite - 10 puntos
+        ; Sat√©lite - 10 puntos
         ; Robot - 25 puntos
         ;
 
         ;
         ; Notas:
         ; o En grupos de 3 los aviones destruidos no pueden dejar de moverse
-        ;   de lo contrario alguno quedarÌa en coordenada Y "mezclada" y
-        ;   "arruinarÌa" los dem·s sprites.
+        ;   de lo contrario alguno quedar√≠a en coordenada Y "mezclada" y
+        ;   "arruinar√≠a" los dem√°s sprites.
         ; o Personalmente no lo he probado en hardware real, pero en Atariage
-        ;   varias personas dicen que ya lo probaron :) y seg˙n las mediciones
+        ;   varias personas dicen que ya lo probaron :) y seg√∫n las mediciones
         ;   con el emulador Stella todo va bien.
-        ; o DuraciÛn de la fortaleza 1: 53 segundos.
-        ; o En ocasiones hay glitches gr·ficos en los pixeles superiores de
+        ; o Duraci√≥n de la fortaleza 1: 53 segundos.
+        ; o En ocasiones hay glitches gr√°ficos en los pixeles superiores de
         ;   los sprites de los enemigos. Es normal.
-        ; o En ocasiones las balas miden 3 lÌneas de video en lugar de 2. Es
+        ; o En ocasiones las balas miden 3 l√≠neas de video en lugar de 2. Es
         ;   normal.
         ;
 
@@ -225,15 +225,15 @@
         ; Sprites disponibles: 0
         ;
         ; Otras cosas interesantes que se pueden hacer:
-        ; o M˙sica de Game Over
-        ; o M˙sica en pantalla de tÌtulo.
-        ; o Usar botÛn de "Select" para algo
-        ; o Usar botÛn de "B/W" para algo.
-        ; o Que las antenas de satÈlite muevan la "cabeza"
-        ;   o Sprite extra y comprobaciÛn aleatoria
+        ; o M√∫sica de Game Over
+        ; o M√∫sica en pantalla de t√≠tulo.
+        ; o Usar bot√≥n de "Select" para algo
+        ; o Usar bot√≥n de "B/W" para algo.
+        ; o Que las antenas de sat√©lite muevan la "cabeza"
+        ;   o Sprite extra y comprobaci√≥n aleatoria
         ;
         ; Con flicker se puede:
-        ; o Pasar a 8K para hacer todo lo que est· listado aquÌ :>
+        ; o Pasar a 8K para hacer todo lo que est√° listado aqu√≠ :>
         ; o Colocar sprites de piso en la fortaleza
         ;   o Sprite extra, variables extra
         ; o Paredes de 48 pixeles de alto con un hueco para pasar (48+40)
@@ -242,21 +242,21 @@
         ; o Bitmaps de adorno para simular abismo en la entrada y salida de
         ;   la fortaleza (bitmap 48 pixeles)
         ;   o Dos bitmaps gigantes (dibujo entrada, dibujo salida)
-        ; o Robotote mejor diseÒado (bitmap 16 pixeles)
+        ; o Robotote mejor dise√±ado (bitmap 16 pixeles)
         ; o Hacer volar misiles mientras hay otros objetos en el piso.
         ;
         ; Cosas que no me convencen:
         ; o Sombras en el espacio para ayudarse con la altitud
-        ; o Cambio de color de enemigo/nave cuando est·n en lÌnea (preferÌ
+        ; o Cambio de color de enemigo/nave cuando est√°n en l√≠nea (prefer√≠
         ;   la mirilla)
         ; o Sombra para robotote. (no es muy importante porque se pone al
         ;   nivel del jugador)
         ; o Sombra para misil teledirigido. (no es muy importante porque se
         ;   pone al nivel del jugador)
         ; o Fondo de estrellas con scrolling usando solamente ball (es
-        ;   extremadamente difÌcil, no hay tiempo en el kernel). Hay un truco
+        ;   extremadamente dif√≠cil, no hay tiempo en el kernel). Hay un truco
         ;   en el Cosmic Ark, pero no se puede usar si se hace HMOVE en cada
-        ;   lÌnea.
+        ;   l√≠nea.
         ;
 
         ;
@@ -276,9 +276,9 @@
 ;COLOR_NTSC	 = 1
 
         ;
-        ; Cada lÌnea de video toma 76 ciclos del procesador
+        ; Cada l√≠nea de video toma 76 ciclos del procesador
         ;
-        ; Para NTSC (262 lÌneas):
+        ; Para NTSC (262 l√≠neas):
         ;    3 - VSYNC
         ;    37 - VBLANK
         ;	   2812 (37 * 76) - 14
@@ -286,7 +286,7 @@
         ;    202 - VIDEO
         ;    20 - VBLANK
         ;
-        ; Para PAL (312 lÌneas):
+        ; Para PAL (312 l√≠neas):
         ;    3 - VSYNC
         ;    62 - VBLANK
         ;	   4712 (62 * 76) - 14
@@ -294,15 +294,15 @@
         ;    202 - VIDEO
         ;    45 - VBLANK
         ;
-        ; Notese que STA WSYNC no hace ninguna generaciÛn de sincronÌa,
-        ; simplemente espera hasta que inicia el prÛximo HBLANK que es
-        ; generado autom·ticamente por el hardware.
+        ; Notese que STA WSYNC no hace ninguna generaci√≥n de sincron√≠a,
+        ; simplemente espera hasta que inicia el pr√≥ximo HBLANK que es
+        ; generado autom√°ticamente por el hardware.
         ;
-        ; Lo ˙nico que controla el software es la sincronÌa vertical
+        ; Lo √∫nico que controla el software es la sincron√≠a vertical
         ; (el VBLANK)
         ;
         ; El procesador 6507 del Atari 2600 es compatible con 6502 pero
-        ; no tiene lÌneas de interrupciÛn y su bus de direcciones est·
+        ; no tiene l√≠neas de interrupci√≥n y su bus de direcciones est√°
         ; limitado a 13 bits.
         ;
         ; Para confirmar que el timing es correcto, utilice el emulador
@@ -403,7 +403,7 @@ TIM64T          = $296          ; set 64 clock interval
 T1024T          = $297          ; set 1024 clock interval
 
         ;
-        ; Inicia lÌnea de jugador
+        ; Inicia l√≠nea de jugador
         ;
 cuadro          = $80           ; Contador de cuadros visualizados
 y_jugador       = $81           ; Coordenada Y 3D del jugador
@@ -416,10 +416,10 @@ x_bala          = $83           ; Coordenada X bala
 yj3d            = $84           ; Coordenada Y 3D para jugador
 y_bala          = $85           ; Coordenada Y bala
 
-linea_jugador   = $86           ; LÌnea actual de sprite player 0
+linea_jugador   = $86           ; L√≠nea actual de sprite player 0
 xj3d            = $87           ; Temporal
 yj3d2           = $88           ; Coordenada Y 3D para sombra
-linea_doble     = $89           ; LÌnea actual de sprite player 1
+linea_doble     = $89           ; L√≠nea actual de sprite player 1
 avance          = $8a           ; Avance de aviones (espacio)
 
         ; Siguientes 3 accedidos en indice
@@ -455,7 +455,7 @@ ye3d4           = $9e           ; Siempre a cero para que funcione
 x_bala2         = $9f           ; Coordenada X bala
 y_bala2         = $a0           ; Coordenada Y bala
 nivel_bala2     = $a1           ; Nivel de la bala
-sprite          = $a2           ; Sprite actual en visualizaciÛn (0-3 puede haber m·s)
+sprite          = $a2           ; Sprite actual en visualizaci√≥n (0-3 puede haber m√°s)
 nivel           = $a3           ; Nivel actual (0-3) (bit 0= 0=Espacio, 1=Fortaleza)
 tiempo          = $a4           ; Tiempo para que aparezca otro elemento
 lector          = $a5           ; Lector de nivel (2 bytes)
@@ -480,25 +480,25 @@ sonido_fondo    = $b4           ; Sonido actual de fondo
 sonido_ap1      = $b5           ; Apuntador a efecto
 
 sonido_ap2      = $b8           ; Apuntador a fondo
-sonido_f1       = $b6           ; ⁄ltimo dato de efecto
-sonido_f2       = $b9           ; ⁄ltimo dato de fondo
-sonido_d1       = $b7           ; DuraciÛn de efecto
-sonido_d2       = $ba           ; DuraciÛn de fondo
+sonido_f1       = $b6           ; √öltimo dato de efecto
+sonido_f2       = $b9           ; √öltimo dato de fondo
+sonido_d1       = $b7           ; Duraci√≥n de efecto
+sonido_d2       = $ba           ; Duraci√≥n de fondo
 sonido_control  = $bb           ; Valor de control para canal 1
 sonido_frec     = $bc           ; Dato (frec/vol) para canal 1
 dificultad      = $bd           ; Dificultad
-mira            = $be           ; Indica si la mira est· activa
+mira            = $be           ; Indica si la mira est√° activa
 mira_off        = $bf           ; Restaura sprite
 mira_x          = $c0           ; Restaura coordenada X
 mira_y          = $c1           ; Restaura coordenada Y.
 fondo           = $c2           ; Color de fondo
 offset9s        = $c3           ; Sprite de sombra
-proximo         = $c4           ; PrÛximo aviÛn que disparar·
+proximo         = $c4           ; Pr√≥ximo avi√≥n que disparar√°
 espacio         = $c5           ; Contador de movimiento del espacio
 bala_der        = $c6           ; Indica si bala enemigo va a la derecha
 
         ; Siguientes 12 accedidos en indice
-ap_digito       = $c7           ; Seis digitos de puntuaciÛn/vidas (12 bytes)
+ap_digito       = $c7           ; Seis digitos de puntuaci√≥n/vidas (12 bytes)
 
         if      COLOR_NTSC=1
 COLOR_BALA          = $0e
@@ -524,9 +524,9 @@ COLOR_TITULO        = $20
         ; La RAM se halla entre $0080 y $00FF.
         ;
 
-        org     $f000           ; LocaciÛn de inicio del ROM (4K)
+        org     $f000           ; Locaci√≥n de inicio del ROM (4K)
 
-        ; >>> EL NUCLEO DEBE CABER EN UNA P¡GINA DE 256 BYTES <<<
+        ; >>> EL NUCLEO DEBE CABER EN UNA P√ÅGINA DE 256 BYTES <<<
         ; >>> COMPROBAR CHECANDO EL ARCHIVO LST GENERADO POR DASM <<<
         ;
         ; 6 ciclos previos (entrada)
@@ -536,10 +536,10 @@ COLOR_TITULO        = $20
         ; Dado el caso se puede usar el registro S para ahorrar tiempo,
         ; pero no es necesario
 pan0
-        ; øLlega a sprite de jugador?
+        ; ¬øLlega a sprite de jugador?
         cpy     yj3d            ; 3
         beq     pan8            ; 5	6
-        ; øLlega a sombra de jugador?
+        ; ¬øLlega a sombra de jugador?
         cpy     yj3d2           ; 8
         beq     pan14           ; 10	     11
         ldx     linea_jugador   ; 13
@@ -559,19 +559,19 @@ pan1    stx     linea_jugador   ; 27	12   20
 
 pan5    sta     GRP0            ; 3	3 Pone bitmap Player 0 (note que llega con A=0)
         sta     HMCLR           ; 3	6
-        ; øLlega a sprite de enemigo?
+        ; ¬øLlega a sprite de enemigo?
         ldx     sprite          ; 3	9 sprite actual
         tya                     ; 2   11
         cmp     ye3d0,x         ; 4   15
         bne     pan4            ; 2/3 17
-        ; >>> Como cmp resultÛ en Z=1, entonces C=1 <<< no hace falta SEC
+        ; >>> Como cmp result√≥ en Z=1, entonces C=1 <<< no hace falta SEC
         lda     xe3d0,x         ; 3   21
-        sta     WSYNC           ; 76  24 - ciclos maximo :) - Inicia sincronÌa de lÌnea
+        sta     WSYNC           ; 76  24 - ciclos maximo :) - Inicia sincron√≠a de l√≠nea
         sta     HMOVE           ; 3
 pex2    sbc     #15             ; 7- Gasta el tiempo necesario dividiendo X por 15
         bcs     pex2            ; 9/10 - 14/19/24/29/34/39/44/49/54/59/64/69
         tax                     ; 11
-        lda     tabla_ajuste_fino-$f1,x; 15 - Consume 5 ciclos cruzando p·gina
+        lda     tabla_ajuste_fino-$f1,x; 15 - Consume 5 ciclos cruzando p√°gina
         tsx                     ; ldx #$40
         sta     HMP1            ; 18
         sta     RESP1           ; 21/26/31/36/41/46/51/56/61/66/71 - Pos. "grande"
@@ -586,10 +586,10 @@ pex2    sbc     #15             ; 7- Gasta el tiempo necesario dividiendo X por 
 
         ; Reg. X contiene 'sprite'
 pan4
-        sta     WSYNC           ; 73 ciclos m·ximo hasta aquÌ
+        sta     WSYNC           ; 73 ciclos m√°ximo hasta aqu√≠
         sta     HMOVE           ; 3	 3
         ;
-        ; øVisualizar la bala?
+        ; ¬øVisualizar la bala?
         ;
         if      0               ; Ahorra cinco ciclos, hay que ver si puedo usarlos
             ldx     #ENAM1      ; 2
@@ -607,7 +607,7 @@ pan4
             bne     pan3        ; 2/3	 8
             lda     #2          ; 2	      9
 pan3        sta     ENAM0       ; 3	11   12
-        ; øVisualizar la bala del enemigo?
+        ; ¬øVisualizar la bala del enemigo?
             lda     #0          ; 2	 2
             cpy     y_bala2     ; 3	 5
             bne     pan7        ; 2/3	 8
@@ -625,53 +625,53 @@ pan9    ora     offset0,x       ; 26
         lda     colores,x       ; 32
         sta     COLUP1          ; 35
         lda     sprites,x       ; 39
-pan6    sta     GRP1            ; 42 (notese que se llega aquÌ con A=0)
+pan6    sta     GRP1            ; 42 (notese que se llega aqu√≠ con A=0)
         tsx                     ; ldx #$40	   ; 68
         stx     HMBL            ; 71
-        sta     WSYNC           ; 74 ciclos hasta aquÌ
+        sta     WSYNC           ; 74 ciclos hasta aqu√≠
         sta     HMOVE           ; 3
         dey                     ; 5
         beq     pan10           ; 7/8
         jmp     pan0            ; 10
 
-        ; Llega aquÌ con 13 Û 8 ciclos
+        ; Llega aqu√≠ con 13 √≥ 8 ciclos
 pan10
         ldx     #$ff            ; 15
         txs                     ; 17
         jsr     muestra_puntos  ; 23
         jmp     pan12
 
-        ; Detecta cÛdigo dividido entre dos p·ginas (usa un ciclo m·s)
+        ; Detecta c√≥digo dividido entre dos p√°ginas (usa un ciclo m√°s)
         if      (pan0&$ff00)!=(pan10&$ff00)
             lda     megabug1    ; :P
         endif
 
         ; Posiciona un sprite en X
-        ; A = PosiciÛn X (ørango?)
+        ; A = Posici√≥n X (¬ørango?)
         ; X = Objeto por posicionar (0=P0, 1=P1, 2=M0, 3=M1, 4=BALL)
         ;
-        ; >>> EL NUCLEO DEBE CABER EN UNA P¡GINA DE 256 BYTES <<<
+        ; >>> EL NUCLEO DEBE CABER EN UNA P√ÅGINA DE 256 BYTES <<<
         ; >>> COMPROBAR CHECANDO EL ARCHIVO LST GENERADO POR DASM <<<
         ;
 posiciona_en_x
         sec
-        sta     WSYNC           ; 0- Inicia sincronÌa de lÌnea
+        sta     WSYNC           ; 0- Inicia sincron√≠a de l√≠nea
         ldy     offset9         ; Necesita desperdiciar tres ciclos
 pex1    sbc     #15             ; 4- Gasta el tiempo necesario dividiendo X por 15
         bcs     pex1            ; 6/7 - 11/16/21/26/31/36/41/46/51/56/61/66
 pex3    tay                     ; 8
-        lda     tabla_ajuste_fino-$f1,y; 13 - Consume 5 ciclos cruzando p·gina
+        lda     tabla_ajuste_fino-$f1,y; 13 - Consume 5 ciclos cruzando p√°gina
         sta     HMP0,x
         sta     RESP0,x         ; 21/26/31/36/41/46/51/56/61/66/71 - Pos. "grande"
         rts
 
-        ; Detecta cÛdigo dividido entre dos p·ginas (usa un ciclo m·s)
+        ; Detecta c√≥digo dividido entre dos p√°ginas (usa un ciclo m√°s)
         if      (pex1&$ff00)!=(pex3&$ff00)
             lda     megabug2    ; :P
         endif
 
         ;
-        ; Inicia explosiÛn
+        ; Inicia explosi√≥n
         ;
 inicia_explosion_sprite
         jsr     gana_puntos
@@ -698,7 +698,7 @@ ie1     lda     x_jugador
         sta     ye3d1
         sbc     #15
         sta     ye3d3
-        lda     #60             ; DuraciÛn de la explosiÛn en cuadros
+        lda     #60             ; Duraci√≥n de la explosi√≥n en cuadros
         sta     explosion
         lda     #8
         sta     largo_sprite
@@ -708,7 +708,7 @@ ie1     lda     x_jugador
 
         .byte   "OTG:)Oct19/13"
 
-        org     $f0f1           ; LocaciÛn de inicio del ROM
+        org     $f0f1           ; Locaci√≥n de inicio del ROM
 tabla_ajuste_fino
         .byte   $70             ; 7 a la izq.
         .byte   $60             ; 6 a la izq.
@@ -727,8 +727,8 @@ tabla_ajuste_fino
         .byte   $90             ; 7 a la der.
 
         ;
-        ; Visualiza puntuaciÛn, vidas y gasolina (sub-kernel)
-        ; >>> EL NUCLEO DEBE CABER EN UNA P¡GINA DE 256 BYTES <<<
+        ; Visualiza puntuaci√≥n, vidas y gasolina (sub-kernel)
+        ; >>> EL NUCLEO DEBE CABER EN UNA P√ÅGINA DE 256 BYTES <<<
         ; >>> COMPROBAR CHECANDO EL ARCHIVO LST GENERADO POR DASM <<<
         ;
 muestra_puntos
@@ -761,7 +761,7 @@ muestra_puntos
         sta     COLUP1          ; 32
         lda     #$03            ; 34	 3 copias juntas
         ldx     #$f0            ; 36
-        ;	 El cÛdigo anterior reemplazÛ este cÛdigo
+        ;	 El c√≥digo anterior reemplaz√≥ este c√≥digo
         ;	  ldx #6		     ; 2
         ;	  sta WSYNC
         ;mp2:	  dex
@@ -801,7 +801,7 @@ mp1     ldy     linea_doble     ; 2
         dec     linea_doble     ; 58
         bpl     mp1             ; 60/61
 mp3
-        ; Detecta cÛdigo dividido entre dos p·ginas (usa un ciclo m·s)
+        ; Detecta c√≥digo dividido entre dos p√°ginas (usa un ciclo m√°s)
         if      (mp1&$ff00)!=(mp3&$ff00)
             lda     megabug3    ; :P
         endif
@@ -819,12 +819,12 @@ mp3
         sta     VBLANK          ; Comienza VBLANK
         stx     TIM64T
         lda     #$25
-        sta     NUSIZ0          ; TamaÒo de Player/Missile 0
+        sta     NUSIZ0          ; Tama√±o de Player/Missile 0
         lda     nucita
-        sta     NUSIZ1          ; TamaÒo de Player/Missile 1
+        sta     NUSIZ1          ; Tama√±o de Player/Missile 1
         inc     cuadro
         ;
-        ; Generador de n˙meros bien aleatorios :P
+        ; Generador de n√∫meros bien aleatorios :P
         ;
         lda     rand
         sec
@@ -850,7 +850,7 @@ inicio  sei                     ; Desactiva interrupciones
         txs                     ; ...copia a registro de pila.
         lda     #0              ; Carga cero en A
 limpia_mem
-        sta     0,X             ; Guarda en posiciÛn 0 m·s X
+        sta     0,X             ; Guarda en posici√≥n 0 m√°s X
         dex                     ; Decrementa X
         bne     limpia_mem      ; Continua hasta que X es cero.
         sta     SWACNT          ; Permite leer palancas
@@ -860,7 +860,7 @@ limpia_mem
         stx     antirebote
 
         ;
-        ; AquÌ reinicia el juego despuÈs de Game Over
+        ; Aqu√≠ reinicia el juego despu√©s de Game Over
         ;
 reinicio
         ;
@@ -879,7 +879,7 @@ lm1     pha
         dex
         bpl     lm1
         ;
-        ; Pantalla de tÌtulo
+        ; Pantalla de t√≠tulo
         ;
         lda     #mensaje_titulo&$ff
         jsr     mensaje
@@ -896,7 +896,7 @@ lm1     pha
         and     #$40
         ora     #$0f
         sta     dificultad
-        lda     #15             ; Coordenada X mÌnima (15), X m·xima (55)
+        lda     #15             ; Coordenada X m√≠nima (15), X m√°xima (55)
         sta     x_jugador
         lda     #0              ; Cero puntos
         sta     puntos
@@ -913,8 +913,8 @@ lm1     pha
 bucle
         ; VERTICAL_SYNC
         lda     #2
-        sta     VSYNC           ; Inicia sincronÌa vertical
-        sta     WSYNC           ; 3 lÌneas de espera
+        sta     VSYNC           ; Inicia sincron√≠a vertical
+        sta     WSYNC           ; 3 l√≠neas de espera
         ldy     sonido_fondo    ; 3
         beq     s02d            ; 5
         dec     sonido_d2       ; 10
@@ -973,7 +973,7 @@ s01
         ;
         stx     TIM64T
         lda     #0
-        sta     VSYNC           ; Detiene sincronÌa vertical
+        sta     VSYNC           ; Detiene sincron√≠a vertical
         sta     linea_jugador
         sta     linea_doble
         lda     fondo
@@ -987,7 +987,7 @@ s01
 s01d    sta     AUDV1
         lda     #$ff
         sta     mira
-        lda     explosion       ; øJugador explotando?
+        lda     explosion       ; ¬øJugador explotando?
         beq     b23a            ; No, salta.
         inc     xe3d1
         inc     xe3d3
@@ -1010,10 +1010,10 @@ mex2    lda     ye3d2
         bcc     mex3
         lda     #0
         sta     ye3d2
-mex3    dec     explosion       ; øFinalizÛ explosiÛn?
+mex3    dec     explosion       ; ¬øFinaliz√≥ explosi√≥n?
         bne     b23b            ; No, salta.
-        lda     vidas           ; øA˙n tiene vidas?
-        bpl     b23c            ; SÌ, salta.
+        lda     vidas           ; ¬øA√∫n tiene vidas?
+        bpl     b23c            ; S√≠, salta.
         lda     #mensaje_final&$ff
         jsr     mensaje         ; GAME OVER
         jmp     reinicio
@@ -1021,7 +1021,7 @@ mex3    dec     explosion       ; øFinalizÛ explosiÛn?
 b23c    jsr     sel_nivel2      ; Reinicia el nivel
 b23b    jmp     b11
 
-        ; Agrega elementos seg˙n el nivel
+        ; Agrega elementos seg√∫n el nivel
 b23a    lda     nivel
         lsr
         bcs     b23
@@ -1031,7 +1031,7 @@ b23a    lda     nivel
         ; Fortaleza: enemigos fijos
         ;
 b23     lda     tiempo
-        cmp     #25             ; øAgrega un adorno?
+        cmp     #25             ; ¬øAgrega un adorno?
         bne     b23d            ; No, salta.
         lda     offset1
         cmp     #$60
@@ -1049,22 +1049,22 @@ b23e    lda     #150
         bpl     b23f
         lda     #$b0            ; Adorno 2
 b23f    sta     offset0
-b23d    dec     tiempo          ; øTiempo de poner otro enemigo?
-        beq     b61             ; SÌ, salta.
+b23d    dec     tiempo          ; ¬øTiempo de poner otro enemigo?
+        beq     b61             ; S√≠, salta.
         jmp     b12             ; No, desplaza los actuales
 
 b61     ldy     #0
         lda     (lector),y
         beq     b28             ; Salta si es el final del nivel
         and     #$f8
-        cmp     #$e0            ; øAdorno de nivel?
+        cmp     #$e0            ; ¬øAdorno de nivel?
         beq     b60
-        cmp     #$90            ; øAlienÌgena, misil, robotote $a0 o electricidad $b8?
+        cmp     #$90            ; ¬øAlien√≠gena, misil, robotote $a0 o electricidad $b8?
         bcc     b60             ; No, salta.
 b28     lda     ye3d1
         ora     ye3d2
-        ora     ye3d3           ; øYa desapareciÛ todo?
-        beq     b28c            ; No, espera un poco m·s
+        ora     ye3d3           ; ¬øYa desapareci√≥ todo?
+        beq     b28c            ; No, espera un poco m√°s
         jmp     b27
 
 b28c    ldx     #8
@@ -1074,12 +1074,12 @@ b28c    ldx     #8
         jmp     b25
 
 b61a    and     #$f8
-        cmp     #$b8            ; øElectricidad?
+        cmp     #$b8            ; ¬øElectricidad?
         beq     b28b
-        cmp     #$a0            ; øRobotote?
+        cmp     #$a0            ; ¬øRobotote?
         bne     b28a
-        lda     #$27            ; Usa un sprite m·s gordo
-        sta     NUSIZ1          ; TamaÒo de Player/Missile 1
+        lda     #$27            ; Usa un sprite m√°s gordo
+        sta     NUSIZ1          ; Tama√±o de Player/Missile 1
         sta     nucita
         ldx     #16
         .byte   $ad             ; LDA para brincar siguientes dos bytes
@@ -1090,14 +1090,14 @@ b28a    stx     largo_sprite
 b60     lda     ye3d1
         beq     b26c
         lda     offset1
-        cmp     #$88            ; øHay un misil vertical activo?
-        beq     b27             ; SÌ, espera que termine antes de poner otra cosa
-        cmp     #$60            ; øHay un agujero de misil?
+        cmp     #$88            ; ¬øHay un misil vertical activo?
+        beq     b27             ; S√≠, espera que termine antes de poner otra cosa
+        cmp     #$60            ; ¬øHay un agujero de misil?
         bne     b26a            ; No, salta.
-        lda     electrico       ; øYa disparÛ?
+        lda     electrico       ; ¬øYa dispar√≥?
         bne     b26
         ;
-        ; Para reducir vacÌos del ·rea de juego en ciertas ocasiones
+        ; Para reducir vac√≠os del √°rea de juego en ciertas ocasiones
         ; dispara al llegar al centro.
         ;
         lda     rand
@@ -1106,7 +1106,7 @@ b60     lda     ye3d1
         lda     #80             ; Centro de la pantalla
         bcs     b26d
         ;
-        ; PequeÒa ecuaciÛn para atinarle al jugador si pasa por encima :>
+        ; Peque√±a ecuaci√≥n para atinarle al jugador si pasa por encima :>
         ;
         lda     yj3d
         sec
@@ -1119,7 +1119,7 @@ b26b    asl
 b26d    cmp     xe3d1
         bcc     b27
         jsr     insercion
-        adc     #8              ; carry es 1, 9 pixeles mÌnimo entre sprites
+        adc     #8              ; carry es 1, 9 pixeles m√≠nimo entre sprites
         sta     ye3d1
         lda     #sonido_4-base_sonido
         jsr     efecto_sonido_prioridad
@@ -1129,10 +1129,10 @@ b26d    cmp     xe3d1
         sta     offset2
         bne     b27
 
-b26a    cmp     #$e0            ; øAdorno de piso?
+b26a    cmp     #$e0            ; ¬øAdorno de piso?
         beq     b26c
-        cmp     #$98            ; øHay misil teledirigido, robotote $a0 o campo $b8?
-        bcs     b27             ; SÌ, salta a esperar
+        cmp     #$98            ; ¬øHay misil teledirigido, robotote $a0 o campo $b8?
+        bcs     b27             ; S√≠, salta a esperar
 b26c    ldx     #8
         stx     largo_sprite
 b26     lda     (lector),y
@@ -1143,7 +1143,7 @@ b26     lda     (lector),y
         sbc     #10             ; Tolerancia
         cmp     ye3d1           ; Se asegura de que la coordenada Y es aceptable
         bcs     b20
-b27     inc     tiempo          ; Espera un poco m·s
+b27     inc     tiempo          ; Espera un poco m√°s
 b22     jmp     b12
 
 b20     jsr     insercion
@@ -1153,12 +1153,12 @@ b20     jsr     insercion
         and     #$f8
         sta     offset1
         ldx     #150
-        cmp     #$a0            ; øRobotote?
+        cmp     #$a0            ; ¬øRobotote?
         bne     b20a
         ldx     #140
 b20a    stx     xe3d1
         ldx     #5
-        cmp     #$e0            ; øAdorno de piso?
+        cmp     #$e0            ; ¬øAdorno de piso?
         beq     b20b
         lda     rand
         and     #4
@@ -1169,7 +1169,7 @@ b20b    stx     tiempo
         and     #$07
         tax
         lda     offset_y,x
-        sta     ola             ; Para referencia campo elÈctrico
+        sta     ola             ; Para referencia campo el√©ctrico
         sta     ye3d1
         jsr     adelanta_lector
         ;
@@ -1177,27 +1177,27 @@ b20b    stx     tiempo
         ;
 b12     ldx     #0
         stx     xj3d
-        ldx     #$fc            ; Ajuste Y de bala para alienÌgena
+        ldx     #$fc            ; Ajuste Y de bala para alien√≠gena
         ldy     #32             ; Nivel con respecto al piso para posible bala
         lda     offset1
-        cmp     #$90            ; øAlienÌgena?
-        beq     b12g            ; SÌ, salta.
+        cmp     #$90            ; ¬øAlien√≠gena?
+        beq     b12g            ; S√≠, salta.
         inc     xj3d            ; Ajuste Y del misil teledirigido
         inc     xj3d            ; Ajuste Y del misil teledirigido
-        cmp     #$98            ; øMisil teledirigido?
-        beq     b12b            ; SÌ, salta
+        cmp     #$98            ; ¬øMisil teledirigido?
+        beq     b12b            ; S√≠, salta
         ldx     #$f3            ; Ajuste Y de bala para robotote
-        ldy     y_jugador       ; Nivel idÈntico al del jugador para posible bala
-        cmp     #$a0            ; øRobotote?
+        ldy     y_jugador       ; Nivel id√©ntico al del jugador para posible bala
+        cmp     #$a0            ; ¬øRobotote?
         bne     b12a            ; No, salta
 b12g    lda     xe3d1
-        cmp     #140            ; øReciÈn salido?
-        bcs     b12d            ; SÌ, salta, debe centrarlo
-        lda     x_bala2         ; øBala activa?
-        bne     b12d            ; SÌ, salta
+        cmp     #140            ; ¬øReci√©n salido?
+        bcs     b12d            ; S√≠, salta, debe centrarlo
+        lda     x_bala2         ; ¬øBala activa?
+        bne     b12d            ; S√≠, salta
         sta     bala_der
         lda     rand
-        cmp     dificultad      ; øTiempo de disparar?
+        cmp     dificultad      ; ¬øTiempo de disparar?
         bcs     b12d            ; No, salta.
         txa
         adc     ye3d1
@@ -1208,7 +1208,7 @@ b12d    lda     offset1
         cmp     #$90
         beq     b12b
         lda     cuadro
-        lsr                     ; El robotote sÛlo se mueve cada dos cuadros
+        lsr                     ; El robotote s√≥lo se mueve cada dos cuadros
         bcc     b12c
         ldx     #8
         stx     xj3d
@@ -1230,12 +1230,12 @@ b14b    lsr
         lsr
         clc
         adc     yj3d
-        adc     xj3d            ; CorrecciÛn robotote
+        adc     xj3d            ; Correcci√≥n robotote
         tax
         lda     offset1
-        cmp     #$90            ; øAlienÌgena?
+        cmp     #$90            ; ¬øAlien√≠gena?
         bne     b12f
-        lda     #32             ; SÌ, lleva al piso
+        lda     #32             ; S√≠, lleva al piso
         sbc     y_jugador
         sta     xj3d
         txa
@@ -1253,7 +1253,7 @@ b12c    jmp     b25
         ; Desplaza los elementos fijos por el piso
         ;
 b12a    ldx     #0
-b15     lda     ye3d0,x         ; øElemento activo?
+b15     lda     ye3d0,x         ; ¬øElemento activo?
         beq     b24             ; No, salta.
         dec     xe3d0,x
         lda     xe3d0,x
@@ -1267,18 +1267,18 @@ b14     and     #3
         cmp     #3
         bne     b17
         dec     ye3d0,x
-b17     lda     x_bala2         ; øBala activa?
-        bne     b24             ; SÌ, salta
+b17     lda     x_bala2         ; ¬øBala activa?
+        bne     b24             ; S√≠, salta
         sta     bala_der
         lda     rand
-        cmp     dificultad      ; øTiempo de disparar?
+        cmp     dificultad      ; ¬øTiempo de disparar?
         bcs     b24             ; No, salta.
         lda     offset0,x
-        cmp     #$40            ; øAviÛn chico?
+        cmp     #$40            ; ¬øAvi√≥n chico?
         beq     b17a
-        cmp     #$68            ; øCaÒÛn?
+        cmp     #$68            ; ¬øCa√±√≥n?
         beq     b17a
-        cmp     #$50            ; øCaÒÛn?
+        cmp     #$50            ; ¬øCa√±√≥n?
         bne     b24             ; No, salta.
         lda     rand
         lsr
@@ -1287,7 +1287,7 @@ b17     lda     x_bala2         ; øBala activa?
         sta     bala_der
         bne     b17a
 
-b17b    lda     #$68            ; Gira caÒÛn
+b17b    lda     #$68            ; Gira ca√±√≥n
         sta     offset0,x
 b17a    lda     ye3d0,x
         sec
@@ -1309,13 +1309,13 @@ b24
         bne     b15
 
         lda     offset1
-        cmp     #$88            ; øMisil vertical?
+        cmp     #$88            ; ¬øMisil vertical?
         bne     b24a
         lda     cuadro
         lsr                     ; Se alza un pixel cada dos cuadros
         bcs     b24a
         lda     ye3d1
-        beq     b24c            ; øSaliÛ de la pantalla?
+        beq     b24c            ; ¬øSali√≥ de la pantalla?
         inc     ye3d1
         sec
         sbc     ye3d2
@@ -1327,7 +1327,7 @@ b24d    lda     ye3d1
         cmp     #97
         bne     b24a
 b24c    lda     #1
-        sta     electrico       ; Ya disparÛ
+        sta     electrico       ; Ya dispar√≥
         ldx     #0
 b24b    lda     ye3d2,x
         sta     ye3d1,x
@@ -1346,7 +1346,7 @@ b10
         bne     b37a
         lda     y_enemigo1
         ora     y_enemigo2
-        ora     y_enemigo3      ; øA˙n hay enemigos activos?
+        ora     y_enemigo3      ; ¬øA√∫n hay enemigos activos?
         bne     b37
         tay                     ; ldy #0
         lda     (lector),y
@@ -1366,7 +1366,7 @@ b31     sta     ola
         stx     largo_sprite
         cmp     #$e0            ; Planetoide
         bcs     b36a
-        cmp     #$c0            ; øSatÈlite?
+        cmp     #$c0            ; ¬øSat√©lite?
         beq     b36
         ldx     #35
         cmp     #$3a
@@ -1403,7 +1403,7 @@ b36b    stx     y_enemigo2
         ldx     #$f0
         bne     b35a
 
-b36     tax                     ; SatÈlite
+b36     tax                     ; Sat√©lite
         lda     #105
         sta     x_enemigo1
         ldy     #72
@@ -1456,19 +1456,19 @@ b6      lda     x_enemigo1,y
         lda     y_enemigo1,y
         beq     b6c
         clc
-        adc     #7              ; SÛlo suma 7 para evitar tener que usar sec
+        adc     #7              ; S√≥lo suma 7 para evitar tener que usar sec
         sbc     xe3d1,x
         sec
         adc     xj3d
         sta     ye3d1,x
         beq     b6c
-        cmp     #97             ; øInvisible?
+        cmp     #97             ; ¬øInvisible?
         bcs     b6c
         lda     x_enemigo1,y
-        ;	 clc		 ; La condiciÛn lo permite
+        ;	 clc		 ; La condici√≥n lo permite
         adc     avance
         sta     xe3d1,x
-        cmp     #151            ; øInvisible?
+        cmp     #151            ; ¬øInvisible?
         bcc     b6d
 b6c     jmp     b5
 b6d
@@ -1489,8 +1489,8 @@ mr4     lda     cuadro
         lsr
         bcs     mr0             ; Debe ser bcs o va a tratar de disparar siendo mira
         lda     dificultad
-        rol                     ; øM·xima dificultad?
-        bmi     mr0             ; SÌ, salta.
+        rol                     ; ¬øM√°xima dificultad?
+        bmi     mr0             ; S√≠, salta.
         lda     y_enemigo1,y
         sec
         sbc     y_jugador
@@ -1505,13 +1505,13 @@ mr4     lda     cuadro
         adc     #3
         cmp     #7
         bcs     mr0
-        stx     mira            ; Depende de que no haya un aviÛn detr·s del otro
+        stx     mira            ; Depende de que no haya un avi√≥n detr√°s del otro
         lda     offset1,x
         sta     mira_off        ; Para restaurar
-        cmp     #$c0            ; øSatÈlite?
+        cmp     #$c0            ; ¬øSat√©lite?
         lda     #$d0
-        bcs     mr3             ; SÌ, salta (usa mirilla de 16 lÌneas)
-        lda     #$d8            ; No, usa mirilla de 8 lÌneas
+        bcs     mr3             ; S√≠, salta (usa mirilla de 16 l√≠neas)
+        lda     #$d8            ; No, usa mirilla de 8 l√≠neas
 mr3     sta     offset1,x
         lda     xe3d1,x
         sta     mira_x
@@ -1544,13 +1544,13 @@ b7      lda     y_enemigo1,y
         bcc     b4
         lda     #$30
 b4      sta     offset1,x
-        lda     x_bala2         ; øBala activa?
+        lda     x_bala2         ; ¬øBala activa?
         bne     b8
         sta     bala_der
         lda     rand
-        cmp     dificultad      ; øTiempo de disparar?
+        cmp     dificultad      ; ¬øTiempo de disparar?
         bcs     b8
-        cpy     proximo         ; øEs el aviÛn que debe disparar?
+        cpy     proximo         ; ¬øEs el avi√≥n que debe disparar?
         bne     b8
         lda     ye3d1,x
         sec
@@ -1561,10 +1561,10 @@ b4      sta     offset1,x
         lda     xe3d1,x
         jsr     efecto_disparo2
         lda     ola
-        cmp     #$3b            ; øAviones despuÈs de bajar/subir?
+        cmp     #$3b            ; ¬øAviones despu√©s de bajar/subir?
         beq     b8a
-        cmp     #$3a            ; øOla de aviÛn simple?
-        bcs     b8              ; SÌ, salta.
+        cmp     #$3a            ; ¬øOla de avi√≥n simple?
+        bcs     b8              ; S√≠, salta.
 b8a     inc     proximo
         lda     proximo
         cmp     #3
@@ -1583,7 +1583,7 @@ b3b     sta     ye3d1,x
         cpx     #4
         bne     b3b
 
-        ; Efecto de sonido seg˙n altitud de la nave
+        ; Efecto de sonido seg√∫n altitud de la nave
 b25     lda     #72
         sec
         sbc     y_jugador
@@ -1595,7 +1595,7 @@ b25     lda     #72
         sta     AUDC0
         lda     #5
         sta     AUDV0
-        ; Cambio de tamaÒo de la nave del jugador
+        ; Cambio de tama√±o de la nave del jugador
         ldx     #16
         lda     y_jugador
         cmp     #48
@@ -1611,11 +1611,11 @@ b1      stx     offset9
         sta     xj3d
         lda     y_jugador
         clc
-        adc     #7              ; SÛlo suma 7 para evitar tener que usar sec
+        adc     #7              ; S√≥lo suma 7 para evitar tener que usar sec
         sbc     xj3d
         sta     yj3d
         lda     nivel
-        lsr                     ; øNivel en el espacio?
+        lsr                     ; ¬øNivel en el espacio?
         bcc     b01             ; Salta, nunca pone sombra
         lda     #31
         ldx     offset9
@@ -1623,11 +1623,11 @@ b1      stx     offset9
         bne     b00
         lda     #30
 b00     clc
-        adc     #7              ; SÛlo suma 7 para evitar tener que usar sec
+        adc     #7              ; S√≥lo suma 7 para evitar tener que usar sec
         sbc     xj3d
         sta     yj3d2           ; Coordenada Y de la sombra
         sbc     yj3d
-        cmp     #$fa            ; øSe sobrepone con nave?
+        cmp     #$fa            ; ¬øSe sobrepone con nave?
         bcc     b001
 b01     lda     #0
 b0      sta     yj3d2
@@ -1659,8 +1659,8 @@ b11
         lsr
         bcc     b44b
         lda     offset1
-        cmp     #$98            ; øMisil teledirigido?
-        beq     b44c            ; SÌ, salta y congela la raya.
+        cmp     #$98            ; ¬øMisil teledirigido?
+        beq     b44c            ; S√≠, salta y congela la raya.
         lda     cuadro
 b44c    eor     #3
         and     #3
@@ -1675,7 +1675,7 @@ b29     sty     espacio
         tya
         lsr                     ; Movimiento lento en espacio
         bcc     b44
-        sbc     #$4b            ; Genera lÌnea duplicada en espacio
+        sbc     #$4b            ; Genera l√≠nea duplicada en espacio
 b44     adc     #$78
         inx                     ; Ball
         jsr     posiciona_en_x
@@ -1702,7 +1702,7 @@ b42     dex
 b43
 
         ;
-        ; Un poco m·s de aritmÈtica
+        ; Un poco m√°s de aritm√©tica
         ;
         ldx     #1
         lda     ye3d0
@@ -1714,10 +1714,10 @@ b43
         dex
 b45     stx     sprite
         ;
-        ; Inicio de gr·ficas
+        ; Inicio de gr√°ficas
         ;
         sta     WSYNC
-        sta     HMOVE           ; Ajuste fino de ˙ltimo posiciona_en_x
+        sta     HMOVE           ; Ajuste fino de √∫ltimo posiciona_en_x
 espera_vblank
         lda     INTIM
         bne     espera_vblank
@@ -1736,25 +1736,25 @@ espera_vblank
         bcc     pan11a
         eor     #$7a
 pan11a  asl
-pan11   stx     CTRLPF          ; TamaÒo de la raya 3D (ball)
+pan11   stx     CTRLPF          ; Tama√±o de la raya 3D (ball)
         sta     COLUPF          ; Color de la raya 3D (playfield no se usa)
         sta     HMCLR           ; Evita movimiento posterior
         lda     #COLOR_BALA     ; Para que la bala sea visible
         sta     COLUP0
 
-        ldy     #96             ; 96 lÌneas
+        ldy     #96             ; 96 l√≠neas
         ;
-        ; Inicia n˙cleo gr·fico
+        ; Inicia n√∫cleo gr√°fico
         ;
-        ; CaracterÌsticas:
+        ; Caracter√≠sticas:
         ; * 1 bala usando missile 0
         ; * 1 bala usando missile 1
         ; * 2 sprites usando player0 (nave y sombra)
-        ; * 4 sprites usando player1 (tres enemigos m·s adorno)
+        ; * 4 sprites usando player1 (tres enemigos m√°s adorno)
         ; * 1 raya de escenario usando ball
         ;
-        ; Cuenta de ciclos exacta para no perder lÌneas de video (si eso
-        ; ocurriera, la cuenta de lÌneas hecha por Stella crecerÌa)
+        ; Cuenta de ciclos exacta para no perder l√≠neas de video (si eso
+        ; ocurriera, la cuenta de l√≠neas hecha por Stella crecer√≠a)
         ;
         lda     offset9
         ora     #7
@@ -1769,7 +1769,7 @@ pan11   stx     CTRLPF          ; TamaÒo de la raya 3D (ball)
         jmp     pan0
 
         ;
-        ; Fin de gr·ficas (200 lÌneas)
+        ; Fin de gr√°ficas (200 l√≠neas)
         ;
 pan12   lda     offset9
         and     #$f8
@@ -1800,31 +1800,31 @@ z2a
         ; Lee el joystick del jugador 0
         ldy     x_jugador
         lda     SWCHA
-        bmi     z2              ; øDerecha?
+        bmi     z2              ; ¬øDerecha?
         cpy     #55
         beq     z2
         inc     x_jugador
 
-z2      rol                     ; øIzquierda?
+z2      rol                     ; ¬øIzquierda?
         bmi     z3
         cpy     #15
         beq     z3
         dec     x_jugador
 
 z3      ldy     y_jugador
-        rol                     ; øAbajo?
+        rol                     ; ¬øAbajo?
         bmi     z4
         cpy     #72
         beq     z4
         inc     y_jugador
 
-z4      rol                     ; øArriba?
+z4      rol                     ; ¬øArriba?
         bmi     z5
         cpy     #32             ; Nave va para abajo
         beq     z5
         dec     y_jugador
 
-z5      jsr     boton_disparo   ; øBotÛn oprimido?
+z5      jsr     boton_disparo   ; ¬øBot√≥n oprimido?
         bpl     z8
         lda     x_bala
         bne     z8
@@ -1850,7 +1850,7 @@ z8
         ;
         ; Mueve bala del enemigo
         ;
-        lda     x_bala2         ; øBala activa?
+        lda     x_bala2         ; ¬øBala activa?
         beq     z10
         ldx     bala_der
         beq     z10a
@@ -1878,8 +1878,8 @@ z11a    lda     nivel_bala2
         adc     #2
         cmp     #5
         bcs     z10
-        lda     CXM1P           ; ColisiÛn misil 1
-        bpl     z10             ; øChocÛ con player 0? no, salta
+        lda     CXM1P           ; Colisi√≥n misil 1
+        bpl     z10             ; ¬øChoc√≥ con player 0? no, salta
         jsr     inicia_explosion
 z11     lda     #0
         sta     y_bala2
@@ -1889,8 +1889,8 @@ z10
         ;
         ; Corriendo a 60 cuadros por segundo
         ;
-z1      ldy     #0              ; SÛlo comprueba jugador
-        lda     x_bala          ; øBala activa?
+z1      ldy     #0              ; S√≥lo comprueba jugador
+        lda     x_bala          ; ¬øBala activa?
         beq     z44
 
 z40     inc     y_bala
@@ -1905,7 +1905,7 @@ z7      sta     x_bala
 
         ;
         ; Comprueba si el jugador (y=0) o la bala (y=1) chocan con
-        ; alg˙n elemento
+        ; alg√∫n elemento
         ;
 z44     ldx     #2
 z30     lda     nivel
@@ -1917,11 +1917,11 @@ z30     lda     nivel
         jmp     z32
 
 zz35    lda     offset1,x
-        cmp     #$b8            ; øElectricidad?
+        cmp     #$b8            ; ¬øElectricidad?
         beq     z35b
-        cmp     #$98            ; øMisil teledirigido o robotote $a0?
-        bcs     z35c            ; SÌ, salta, siempre al nivel
-        cmp     #$88            ; øMisil vertical?
+        cmp     #$98            ; ¬øMisil teledirigido o robotote $a0?
+        bcs     z35c            ; S√≠, salta, siempre al nivel
+        cmp     #$88            ; ¬øMisil vertical?
         bne     z35a
         lda     ye3d1,x         ; Saca nivel en referencia a su agujero
         ;	 sec		 ; Garantizado
@@ -1944,12 +1944,12 @@ z35g    jmp     z32b
 z35e    cmp     #56
         bcs     z35g
 
-        ; Simplifica detecciÛn de impacto robotote
+        ; Simplifica detecci√≥n de impacto robotote
 z35c    tya
         lsr
-        lda     CXM0P           ; øChoque entre misil 0 y player 1?
+        lda     CXM0P           ; ¬øChoque entre misil 0 y player 1?
         bcs     z35f
-        lda     CXPPMM          ; øChoque entre player 0 y player 1?
+        lda     CXPPMM          ; ¬øChoque entre player 0 y player 1?
 z35f    bpl     z35d            ; No, salta.
         bmi     z34
 
@@ -1990,51 +1990,51 @@ z33     lda     yj3d,y
 z33a    adc     #4
         cmp     #9
 z33b    bcs     z32
-z34     ; El jugador/bala tocÛ un enemigo
+z34     ; El jugador/bala toc√≥ un enemigo
         lda     offset1,x
-        cmp     #$e0            ; øAdorno o planetoides?
-        bcs     z32             ; SÌ, no afecta
-        cmp     #$48            ; øExplosiÛn 1?
-        beq     z32             ; SÌ, no afecta
-        cmp     #$58            ; øExplosiÛn 2?
-        beq     z32             ; SÌ, no afecta
-        cmp     #$60            ; øAgujero de misil?
-        beq     z32             ; SÌ, no afecta
+        cmp     #$e0            ; ¬øAdorno o planetoides?
+        bcs     z32             ; S√≠, no afecta
+        cmp     #$48            ; ¬øExplosi√≥n 1?
+        beq     z32             ; S√≠, no afecta
+        cmp     #$58            ; ¬øExplosi√≥n 2?
+        beq     z32             ; S√≠, no afecta
+        cmp     #$60            ; ¬øAgujero de misil?
+        beq     z32             ; S√≠, no afecta
         cpy     #0
         bne     z34a
         jsr     inicia_explosion_sprite
         jmp     z32c
 
 z34a    lda     offset1,x       ; Toma sprite
-        cmp     #$80            ; øAgujero de misil disparando?
-        beq     z37             ; SÌ, detiene bala
-        cmp     #$b8            ; øElectricidad?
-        beq     z37             ; SÌ, detiene bala
-        cmp     #$70            ; øGasolina?
+        cmp     #$80            ; ¬øAgujero de misil disparando?
+        beq     z37             ; S√≠, detiene bala
+        cmp     #$b8            ; ¬øElectricidad?
+        beq     z37             ; S√≠, detiene bala
+        cmp     #$70            ; ¬øGasolina?
         bne     z38             ; No, salta.
         lda     gasolina
         clc
-        adc     #$0f            ; M·s gasolina
+        adc     #$0f            ; M√°s gasolina
         and     #$f8
         cmp     #$50            ; Limita a diez unidades
         bcc     z39
         lda     #$50
 z39     sta     gasolina
 z38     lda     offset1,x       ; Toma sprite
-        cmp     #$98            ; øMisil teledirigido?
+        cmp     #$98            ; ¬øMisil teledirigido?
         bne     z38a
         inc     electrico
         ldy     electrico
-        cpy     #5              ; øCinco impactos?
+        cpy     #5              ; ¬øCinco impactos?
         bne     z37             ; No, salta.
-z38a    cmp     #$a0            ; øRobotote?
+z38a    cmp     #$a0            ; ¬øRobotote?
         bne     z38b
         inc     electrico
         ldy     electrico
-        cpy     #10             ; øDiez impactos?
+        cpy     #10             ; ¬øDiez impactos?
         bne     z37             ; No, salta.
 z38b    jsr     gana_puntos
-        lda     #$48            ; Convierte en explosiÛn
+        lda     #$48            ; Convierte en explosi√≥n
         sta     offset1,x
         lda     #sonido_3-base_sonido
         jsr     efecto_sonido_prioridad
@@ -2078,7 +2078,7 @@ z14     cmp     #$39
         cpy     #72
         jmp     z16
 
-z15     cmp     #$c0            ; SatÈlite
+z15     cmp     #$c0            ; Sat√©lite
         bne     z20
         dec     x_enemigo1
         lda     x_enemigo1
@@ -2119,15 +2119,15 @@ z22     sty     y_enemigo1
         sty     y_enemigo3
 z9
         ;
-        ; Mueve el campo elÈctrico
+        ; Mueve el campo el√©ctrico
         ;
         lda     ye3d1
         beq     z41
         lda     offset1
-        cmp     #$b8            ; øElectricidad?
+        cmp     #$b8            ; ¬øElectricidad?
         bne     z41
         ldx     electrico
-        cpx     #5              ; øAlcanzÛ el ancho horizontal?
+        cpx     #5              ; ¬øAlcanz√≥ el ancho horizontal?
         bne     z43             ; No, salta.
 z42     lda     ye3d1
         clc
@@ -2149,23 +2149,23 @@ z43     inx
         clc
         adc     #8
         sta     xe3d1
-        cmp     #160            ; øSe sale de la pantalla?
+        cmp     #160            ; ¬øSe sale de la pantalla?
         bcs     z42
 z43a    stx     electrico
 z41
         ; Sonido de fondo
         ldx     offset1
         lda     #sonido_5-base_sonido
-        cpx     #$c0            ; øSatËlite?
+        cpx     #$c0            ; ¬øSat√®lite?
         beq     b11b
         lda     #sonido_6-base_sonido
-        cpx     #$98            ; øMisil teledirigido?
+        cpx     #$98            ; ¬øMisil teledirigido?
         beq     b11b
         lda     #sonido_7-base_sonido
-        cpx     #$b8            ; øElectricidad?
+        cpx     #$b8            ; ¬øElectricidad?
         beq     b11b
         lda     #sonido_8-base_sonido
-        cpx     #$a0            ; øRobotote?
+        cpx     #$a0            ; ¬øRobotote?
         beq     b11b
         lda     #0
 b11b    cmp     sonido_fondo
@@ -2178,11 +2178,11 @@ b11b    cmp     sonido_fondo
         sta     sonido_d2
 b11c
         lda     cuadro
-        ;and #$ff	 ; ø256 cuadros? (4 segundos)
+        ;and #$ff	 ; ¬ø256 cuadros? (4 segundos)
         bne     b50
         lda     nivel
-        lsr                     ; øEspacio?
-        bcc     b50             ; SÌ, no gasta gasolina
+        lsr                     ; ¬øEspacio?
+        bcc     b50             ; S√≠, no gasta gasolina
         cmp     #6
         ldx     #-2
         bcc     b51
@@ -2194,7 +2194,7 @@ b51     txa
         clc
         adc     gasolina        ; Resta gasolina
         sta     gasolina
-        beq     b50a            ; øSe acabÛ?
+        beq     b50a            ; ¬øSe acab√≥?
         bpl     b50
         lda     #0
         sta     gasolina
@@ -2203,8 +2203,8 @@ b50
 
         ;
         ; Actualiza el indicador de puntos, se hace hasta
-        ; despuÈs de haber visualizado el indicador de puntos,
-        ; asÌ que puede haber un desfase de un cuadro
+        ; despu√©s de haber visualizado el indicador de puntos,
+        ; as√≠ que puede haber un desfase de un cuadro
         ;
         ldx     #0
         ldy     #6
@@ -2247,7 +2247,7 @@ overscan
         jmp     bucle
 
         ;
-        ; InserciÛn de nuevo sprite
+        ; Inserci√≥n de nuevo sprite
         ;
 insercion
         ldx     #1
@@ -2271,7 +2271,7 @@ efecto_disparo2
 efecto_sonido
         pha
         lda     sonido_efecto
-        cmp     #sonido_3-base_sonido; øHay explosiÛn o lanzamiento?
+        cmp     #sonido_3-base_sonido; ¬øHay explosi√≥n o lanzamiento?
         pla
         bcs     es1
 efecto_sonido_prioridad
@@ -2286,13 +2286,13 @@ es1     rts
         ; Gana puntos por destruir un enemigo
         ;
 gana_puntos
-        lda     offset1,x       ; Este valor siempre es un m˙ltiplo de 8
+        lda     offset1,x       ; Este valor siempre es un m√∫ltiplo de 8
         sec
         sbc     #64
         bcs     gp2
         lda     #0
 gp2     tay
-        lda     letras+7,y      ; Indexa en puntuaciÛn
+        lda     letras+7,y      ; Indexa en puntuaci√≥n
         sed
         clc
         adc     puntos
@@ -2324,7 +2324,7 @@ sel_nivel2
         lda     #$50            ; Valor 5.3
         sta     gasolina
         lda     #72             ; El jugador empieza arriba
-        sta     y_jugador       ; Coordenada Y mÌnima (72), Y m·xima (32)
+        sta     y_jugador       ; Coordenada Y m√≠nima (72), Y m√°xima (32)
 sel_nivel
         lda     nivel
         and     #3
@@ -2380,15 +2380,15 @@ sn6     sta     ola,x
         ldx     #COLOR_FORTALEZA2; Fortaleza
 sn5     stx     fondo           ; Color de fondo
         lda     #$25
-        sta     NUSIZ0          ; TamaÒo de Player/Missile 0
-        sta     NUSIZ1          ; TamaÒo de Player/Missile 1
+        sta     NUSIZ0          ; Tama√±o de Player/Missile 0
+        sta     NUSIZ1          ; Tama√±o de Player/Missile 1
         sta     nucita
         ldx     #8
         stx     largo_sprite
         rts
 
         ;
-        ; Mensaje hasta botÛn oprimido
+        ; Mensaje hasta bot√≥n oprimido
         ;
 mensaje
         ldx     #mensaje_final>>8
@@ -2400,8 +2400,8 @@ mensaje
         sta     AUDV1
 me0     ; VERTICAL_SYNC
         lda     #2
-        sta     VSYNC           ; Inicia sincronÌa vertical
-        sta     WSYNC           ; 3 lÌneas de espera
+        sta     VSYNC           ; Inicia sincron√≠a vertical
+        sta     WSYNC           ; 3 l√≠neas de espera
         sta     WSYNC
         if      NTSC=1
             ldx     #(37*76-14)/64
@@ -2412,12 +2412,12 @@ me0     ; VERTICAL_SYNC
         ;
         stx     TIM64T
         lda     #0
-        sta     VSYNC           ; Detiene sincronÌa vertical
+        sta     VSYNC           ; Detiene sincron√≠a vertical
         ;
-        ; Inicio de gr·ficas
+        ; Inicio de gr√°ficas
         ;
-        ; Asume inicializaciÛn previa (inicio del juego)
-        ; o que se llamÛ muestra_puntos (deja vars. iniciadas)
+        ; Asume inicializaci√≥n previa (inicio del juego)
+        ; o que se llam√≥ muestra_puntos (deja vars. iniciadas)
         ;
         lda     cuadro
         lsr
@@ -2476,7 +2476,7 @@ me5     sta     WSYNC
         ;
         jsr     muestra_puntos
         ;
-        ; Fin de gr·ficas (200 lÌneas)
+        ; Fin de gr√°ficas (200 l√≠neas)
         ;
 me7     lda     INTIM
         bne     me7
@@ -2488,7 +2488,7 @@ me7     lda     INTIM
 me10    jmp     me0
 
 me9     jsr     generico
-        jsr     boton_disparo   ; øBotÛn oprimido?
+        jsr     boton_disparo   ; ¬øBot√≥n oprimido?
         bpl     me10
         rts
 
@@ -2496,9 +2496,9 @@ me9     jsr     generico
         ; Formato de sonido:
         ; Primer byte - Instrumento (control TIA en realidad)
         ;
-        ; DespuÈs:
+        ; Despu√©s:
         ; Primer byte - Frec. (bits 0-4) y vol (bits 5-7) (sumar 8)
-        ; Segundo byte - DuraciÛn en cuadros
+        ; Segundo byte - Duraci√≥n en cuadros
         ;
         ; Si el primer byte es 0xff termina el efecto
         ;
@@ -2516,33 +2516,33 @@ espacio_1
         .byte   $f0             ; Planetoide
         .byte   $38             ; Tres aviones por arriba
         .byte   $39             ; Tres aviones por abajo
-        .byte   $3a,52          ; AviÛn loquito
-        .byte   $3b,72          ; Un aviÛn a la vez
-        .byte   $3c,52          ; Un aviÛn a la vez
-        .byte   $3d,32          ; Un aviÛn a la vez
-        .byte   $c0             ; SatÈlite
+        .byte   $3a,52          ; Avi√≥n loquito
+        .byte   $3b,72          ; Un avi√≥n a la vez
+        .byte   $3c,52          ; Un avi√≥n a la vez
+        .byte   $3d,32          ; Un avi√≥n a la vez
+        .byte   $c0             ; Sat√©lite
         .byte   $39             ; Tres aviones por abajo
-        .byte   $3b,32          ; Un aviÛn a la vez
-        .byte   $3c,52          ; Un aviÛn a la vez
-        .byte   $3d,72          ; Un aviÛn a la vez
+        .byte   $3b,32          ; Un avi√≥n a la vez
+        .byte   $3c,52          ; Un avi√≥n a la vez
+        .byte   $3d,72          ; Un avi√≥n a la vez
         .byte   $38             ; Tres aviones por arriba
-        .byte   $3a,52          ; AviÛn loquito
+        .byte   $3a,52          ; Avi√≥n loquito
         .byte   $00             ; Fin de nivel
 
-        ; AviÛn grande = $30	3
-        ; AviÛn medio = $38	3
-        ; AviÛn chico = $40	3
+        ; Avi√≥n grande = $30	3
+        ; Avi√≥n medio = $38	3
+        ; Avi√≥n chico = $40	3
         ; Combustible = $70	2
         ; Antena = $78 	2
         ; Agujero = $60
-        ; CaÒÛn girado = $50	2
-        ; CaÒÛn = $68		2
-        ; AlienÌgena = $90	3
+        ; Ca√±√≥n girado = $50	2
+        ; Ca√±√≥n = $68		2
+        ; Alien√≠gena = $90	3
         ; Misil = $98		5
-        ; SatÈlite = $C0      10
+        ; Sat√©lite = $C0      10
         ; Robotote = $A0      25
         ; Electricidad = $B8
-        ; Adorno de piso = $e0, sÛlo antes de $60
+        ; Adorno de piso = $e0, s√≥lo antes de $60
 
         ; Fortaleza 1
 fortaleza_1
@@ -2579,7 +2579,7 @@ fortaleza_1
         .byte   $73
         .byte   $73
         .byte   $79
-        .byte   $93             ; AlienÌgena
+        .byte   $93             ; Alien√≠gena
         .byte   $6a
         .byte   $51
         .byte   $6b
@@ -2615,7 +2615,7 @@ sonido_2
         .byte   1,$60
         .byte   0
 
-        ; ExplosiÛn
+        ; Explosi√≥n
 sonido_3
         .byte   $08
         .byte   2,$84
@@ -2639,7 +2639,7 @@ sonido_4
         .byte   0
 
         ; Los siguientes cuatro son sonidos de fondo continuos
-        ; SatÈlite
+        ; Sat√©lite
 sonido_5
         .byte   $01
         .byte   7,$41
@@ -2697,7 +2697,7 @@ fortaleza_2
         .byte   $bc             ; Electricidad
         .byte   $e0
         .byte   $61
-        .byte   $93             ; AlienÌgena
+        .byte   $93             ; Alien√≠gena
         .byte   $60
         .byte   $68
         .byte   $bd             ; Electricidad
@@ -2713,9 +2713,9 @@ fortaleza_2
         .byte   $bd             ; Electricidad
         .byte   $40
         .byte   $70
-        .byte   $93             ; AlienÌgena
-        .byte   $93             ; AlienÌgena
-        .byte   $93             ; AlienÌgena
+        .byte   $93             ; Alien√≠gena
+        .byte   $93             ; Alien√≠gena
+        .byte   $93             ; Alien√≠gena
         .byte   $43
         .byte   $7a
         .byte   $71
@@ -2726,30 +2726,30 @@ fortaleza_2
         ; Espacio 2
 espacio_2
         .byte   $f1             ; Planetoide
-        .byte   $3a,32          ; AviÛn loquito
-        .byte   $c0             ; SatÈlite
-        .byte   $3b,52          ; Un aviÛn a la vez
-        .byte   $3c,52          ; Un aviÛn a la vez
-        .byte   $3d,52          ; Un aviÛn a la vez
+        .byte   $3a,32          ; Avi√≥n loquito
+        .byte   $c0             ; Sat√©lite
+        .byte   $3b,52          ; Un avi√≥n a la vez
+        .byte   $3c,52          ; Un avi√≥n a la vez
+        .byte   $3d,52          ; Un avi√≥n a la vez
         .byte   $38             ; Tres aviones por arriba
-        .byte   $3a,72          ; AviÛn loquito
+        .byte   $3a,72          ; Avi√≥n loquito
         .byte   $39             ; Tres aviones por abajo
-        .byte   $3b,72          ; Un aviÛn a la vez
-        .byte   $3c,52          ; Un aviÛn a la vez
-        .byte   $3d,72          ; Un aviÛn a la vez
-        .byte   $c0             ; SatÈlite
+        .byte   $3b,72          ; Un avi√≥n a la vez
+        .byte   $3c,52          ; Un avi√≥n a la vez
+        .byte   $3d,72          ; Un avi√≥n a la vez
+        .byte   $c0             ; Sat√©lite
         .byte   $39             ; Tres aviones por abajo
-        .byte   $3a,52          ; AviÛn loquito
-        .byte   $00             ; Fin de nivel y alineaciÛn
+        .byte   $3a,52          ; Avi√≥n loquito
+        .byte   $00             ; Fin de nivel y alineaci√≥n
 
-        org     $fd00           ; LocaciÛn de inicio del ROM
-        ; Para evitar cruces de p·gina
+        org     $fd00           ; Locaci√≥n de inicio del ROM
+        ; Para evitar cruces de p√°gina
 
-        ; Sprites de 8 lÌneas ubicados en m˙ltiplos de 8
-        ; Sprites de 16 lÌneas ubicados en m˙ltiplos de 16
+        ; Sprites de 8 l√≠neas ubicados en m√∫ltiplos de 8
+        ; Sprites de 16 l√≠neas ubicados en m√∫ltiplos de 16
 
         ;
-        ; Colores de sprite por lÌnea
+        ; Colores de sprite por l√≠nea
         ;
 colores
         if      COLOR_NTSC = 1
@@ -2838,7 +2838,7 @@ colores
             .byte   $b8
             .byte   $b8
 
-        ; ExplosiÛn 1
+        ; Explosi√≥n 1
 
             .byte   $34
             .byte   $34
@@ -2849,7 +2849,7 @@ colores
             .byte   $34
             .byte   $34
 
-        ; CaÒÛn
+        ; Ca√±√≥n
 
             .byte   $26
             .byte   $28
@@ -2860,7 +2860,7 @@ colores
             .byte   $2a
             .byte   $2a
 
-        ; ExplosiÛn 2
+        ; Explosi√≥n 2
 
             .byte   $38
             .byte   $38
@@ -2882,7 +2882,7 @@ colores
             .byte   $1a
             .byte   $1a
 
-        ; CaÒÛn
+        ; Ca√±√≥n
 
             .byte   $26
             .byte   $28
@@ -2937,7 +2937,7 @@ colores
             .byte   $0e
             .byte   $0c
 
-        ; AlienÌgena
+        ; Alien√≠gena
             .byte   $44
             .byte   $44
             .byte   $44
@@ -2999,7 +2999,7 @@ colores
             .byte   $0e
             .byte   $0e
 
-        ; SatÈlite
+        ; Sat√©lite
 
             .byte   $0c
             .byte   $0c
@@ -3165,7 +3165,7 @@ colores
             .byte   $78
             .byte   $78
 
-        ; ExplosiÛn 1
+        ; Explosi√≥n 1
 
             .byte   $44
             .byte   $44
@@ -3176,7 +3176,7 @@ colores
             .byte   $44
             .byte   $44
 
-        ; CaÒÛn
+        ; Ca√±√≥n
 
             .byte   $26
             .byte   $28
@@ -3187,7 +3187,7 @@ colores
             .byte   $2a
             .byte   $2a
 
-        ; ExplosiÛn 2
+        ; Explosi√≥n 2
 
             .byte   $48
             .byte   $48
@@ -3209,7 +3209,7 @@ colores
             .byte   $2a
             .byte   $2a
 
-        ; CaÒÛn
+        ; Ca√±√≥n
 
             .byte   $26
             .byte   $28
@@ -3264,7 +3264,7 @@ colores
             .byte   $0e
             .byte   $0c
 
-        ; AlienÌgena
+        ; Alien√≠gena
             .byte   $64
             .byte   $64
             .byte   $64
@@ -3326,7 +3326,7 @@ colores
             .byte   $0e
             .byte   $0e
 
-        ; SatÈlite
+        ; Sat√©lite
 
             .byte   $0c
             .byte   $0c
@@ -3408,11 +3408,11 @@ colores
 
         endif
 
-        org     $fe00           ; LocaciÛn de inicio del ROM
-        ; Para evitar cruces de p·gina
+        org     $fe00           ; Locaci√≥n de inicio del ROM
+        ; Para evitar cruces de p√°gina
 
         ;
-        ; Los sprites est·n verticalmente al revÈs, para ahorrar
+        ; Los sprites est√°n verticalmente al rev√©s, para ahorrar
         ; instrucciones al visualizar.
         ;
 sprites
@@ -3470,7 +3470,7 @@ sprites
         .byte   $7e
         .byte   $7e
         .byte   $6c
-        ; AviÛn grande ($30)
+        ; Avi√≥n grande ($30)
         .byte   $04
         .byte   $cc
         .byte   $f8
@@ -3479,7 +3479,7 @@ sprites
         .byte   $66
         .byte   $42
         .byte   $02
-        ; AviÛn medio ($38)
+        ; Avi√≥n medio ($38)
         .byte   $04
         .byte   $0c
         .byte   $78
@@ -3488,7 +3488,7 @@ sprites
         .byte   $66
         .byte   $42
         .byte   $00
-        ; AviÛn chico ($40)
+        ; Avi√≥n chico ($40)
         .byte   $08
         .byte   $18
         .byte   $70
@@ -3497,7 +3497,7 @@ sprites
         .byte   $6c
         .byte   $44
         .byte   $00
-        ; ExplosiÛn ($48)
+        ; Explosi√≥n ($48)
         .byte   $00
         .byte   $08
         .byte   $56
@@ -3506,7 +3506,7 @@ sprites
         .byte   $38
         .byte   $66
         .byte   $00
-        ; CaÒÛn mirando a la der. ($50)
+        ; Ca√±√≥n mirando a la der. ($50)
         .byte   $39
         .byte   $7b
         .byte   $7e
@@ -3515,7 +3515,7 @@ sprites
         .byte   $7e
         .byte   $3c
         .byte   $00
-        ; ExplosiÛn ($58)
+        ; Explosi√≥n ($58)
         .byte   $22
         .byte   $99
         .byte   $66
@@ -3533,7 +3533,7 @@ sprites
         .byte   $6e
         .byte   $38
         .byte   $00
-        ; CaÒÛn mirando a la izq. ($68)
+        ; Ca√±√≥n mirando a la izq. ($68)
         .byte   $9c
         .byte   $de
         .byte   $7e
@@ -3578,7 +3578,7 @@ sprites
         .byte   $38
         .byte   $38
         .byte   $10
-        ; AlienÌgena ($90)
+        ; Alien√≠gena ($90)
         .byte   $38
         .byte   $7c
         .byte   $44
@@ -3633,7 +3633,7 @@ sprites
         .byte   $2b
         .byte   $59
         .byte   $48
-        ; SatÈlite ($c0)
+        ; Sat√©lite ($c0)
         .byte   $10
         .byte   $38
         .byte   $14
@@ -3762,8 +3762,8 @@ adelanta_lector
 al1     rts
 
         ;
-        ; Obtiene botÛn de disparo.
-        ; Se asegura de que el jugador no puede dejar oprimido el botÛn :>
+        ; Obtiene bot√≥n de disparo.
+        ; Se asegura de que el jugador no puede dejar oprimido el bot√≥n :>
         ;
 boton_disparo
         lda     INPT4
@@ -3775,14 +3775,14 @@ boton_disparo
         lda     antirebote      ; Puede ser txa pero desalinea JMP construido abajo
 bd1     rts
 
-        ; Servicio genÈrico
+        ; Servicio gen√©rico
 generico
         lda     SWCHB
-        lsr                     ; øReset?
+        lsr                     ; ¬øReset?
         bcs     bd1
         ;jmp $f000
         .byte   $4c             ; Forma JMP
 
         org     $fffc
-        .word   inicio          ; PosiciÛn de inicio al recibir RESET
-        .word   inicio          ; PosiciÛn para servir BRK
+        .word   inicio          ; Posici√≥n de inicio al recibir RESET
+        .word   inicio          ; Posici√≥n para servir BRK
