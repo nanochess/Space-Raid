@@ -43,7 +43,7 @@ pan12:  sta banco1      ; Selecciona banco 1
         ; A = Posición X (¿rango?)
         ; X = Objeto por posicionar (0=P0, 1=P1, 2=M0, 3=M1, 4=BALL)
         ;
-        ; >>> EL NUCLEO DEBE CABER EN UNA P¡GINA DE 256 BYTES <<<
+        ; >>> EL NUCLEO DEBE CABER EN UNA PÁGINA DE 256 BYTES <<<
         ; >>> COMPROBAR CHECANDO EL ARCHIVO LST GENERADO POR DASM <<<
         ;
 posiciona_en_x:
@@ -218,7 +218,7 @@ sombra: clc
         beq pan0                ; 13
         jmp pam0
         
-        ; >>> EL NUCLEO DEBE CABER EN UNA P¡GINA DE 256 BYTES <<<
+        ; >>> EL NUCLEO DEBE CABER EN UNA PÁGINA DE 256 BYTES <<<
         ; >>> COMPROBAR CHECANDO EL ARCHIVO LST GENERADO POR DASM <<<
         ;
         ; 6 ciclos previos (entrada)
@@ -341,7 +341,7 @@ pan10:
 
         ds 256-(.&$ff),$ff
 
-        ; >>> EL NUCLEO DEBE CABER EN UNA P¡GINA DE 256 BYTES <<<
+        ; >>> EL NUCLEO DEBE CABER EN UNA PÁGINA DE 256 BYTES <<<
         ; >>> COMPROBAR CHECANDO EL ARCHIVO LST GENERADO POR DASM <<<
         ;
         ; 6 ciclos previos (entrada)

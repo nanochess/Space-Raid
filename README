@@ -18,5 +18,11 @@ The following files are provided:
 
 I developed this code in a time where I didn't intend to publish source code, so I wrote all comments in Spanish, I intend to translate it later to English but my free time is scarce.
 
+Assemble with dasm from http://dasm-dillon.sourceforge.net/ 
+Tested with Stella from https://stella-emu.github.io/
+Tested with real Atari 2600 using Harmony cart.
+Tested with online emulation from http://8bitworkshop.com/
+Demostration video at https://www.youtube.com/watch?v=tMyCQ0T4V-Y
+
 Latest revision: Mar/04/2018
 

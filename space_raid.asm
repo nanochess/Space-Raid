@@ -263,13 +263,17 @@
         ; Defina esto a 1 para frecuencias NTSC (60 hz)
         ; Defina esto a 0 para frecuencias PAL (50 hz)
         ;
-        ;NTSC	  = 1
+        ; Desactive comentario para http://8bitworkshop.com
+        ;
+;NTSC	  = 1
 
         ;
         ; Defina esto a 1 para colores NTSC
         ; Defina esto a 0 para colores PAL
         ;
-        ;COLOR_NTSC	 = 1
+        ; Desactive comentario para http://8bitworkshop.com
+        ;
+;COLOR_NTSC	 = 1
 
         ;
         ; Cada línea de video toma 76 ciclos del procesador
