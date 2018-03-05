@@ -9,7 +9,7 @@ The following files are provided:
 
   space_raid_0.asm    Bank 0 of Space Raid (8k version)
   space_raid_1.asm    Bank 1 of Space Raid (8k version)
-  space_raid_m.asm    Common definitios for Space Raid.
+  space_raid_m.asm    Common definitions for Space Raid.
 
   space_raid.asm      Space Raid (4k version)
 
