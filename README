@@ -1,0 +1,22 @@
+Space Raid for Atari VCS/2600
+Full source code files
+(c) Copyright 2013 Oscar Toledo G.
+http://nanochess.org/
+
+This code is provided exclusively for non-commercial usage for educative purposes only.
+
+The following files are provided:
+
+  space_raid_0.asm    Bank 0 of Space Raid (8k version)
+  space_raid_1.asm    Bank 1 of Space Raid (8k version)
+  space_raid_m.asm    Common definitios for Space Raid.
+
+  space_raid.asm      Space Raid (4k version)
+
+  ens.sh              Assemble both versions. (*nix)
+  ens.bat             Assemble both versions. (Windoze)
+
+I developed this code in a time where I didn't intend to publish source code, so I wrote all comments in Spanish, I intend to translate it later to English but my free time is scarce.
+
+Latest revision: Mar/04/2018
+
